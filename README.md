@@ -20,35 +20,32 @@ s
 
 ## Usage
 Prepare your CSV files (sample_add_list.csv and sample_remove_list.csv) with device details.
+
 Run the script:
-bash
-Copy code
-python your_script_name.py
+    python add_remove_device.py
+
 Follow the output on the terminal for the status of device addition or removal.
-CSV File Format
+
+## CSV File Format
 Device List CSV Files
-The script requires two CSV files: one for adding devices (sample_add_list.csv) and another for removing devices (sample_remove_list.csv). Each CSV file should follow this specific format:
+- The script requires two CSV files: one for adding devices (sample_add_list.csv) and another for removing devices (sample_remove_list.csv). Each CSV file should follow this specific format:
 
-CSV Format
-Each CSV file should contain two columns:
+- CSV Format
+    Each CSV file should contain two columns:
 
-team_id: This column represents the unique identifier for the team to which the device belongs.
-device_address: This column contains the address of the device.
-Example
-Here is an example of how the CSV file should be structured:
+    team_id: This column represents the unique identifier for the team to which the device belongs.
+    device_address: This column contains the address of the device.
+    Example
+    Here is an example of how the CSV file should be structured:
 
-python
-Copy code
+Example:
+```
 team_id,device_address
 ffdddba1-d22e-11ec-b15d-0243c669dd9b,address_1
 ffdddba1-d22e-11ec-b15d-0243c669dd9b,address_2
 ...
-How It Works
-Environment Variables: The script loads API keys from a .env file.
-API Header Setup: Sets up the authorization headers using the API key.
-Class Methods:
-_call_api: Private method to make API requests.
-add_devices: Method to add devices to a team.
-remove_devices: Method to remove devices from a team.
-process_csv: Processes CSV files to extract device details.
-Main Function: The main function processes the CSV files and calls the add_devices and remove_devices methods for each device.
+```
+
+## How It Works
+- Environment Variables: The script loads API keys from a .env file.
+- Main Function: The main function processes the CSV files and calls the add_devices and remove_devices methods for each device.
