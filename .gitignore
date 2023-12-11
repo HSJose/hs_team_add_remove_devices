@@ -1,0 +1,4 @@
+.env
+*.csv
+!sample_add_list.csv
+!sample_remove_list.csv
