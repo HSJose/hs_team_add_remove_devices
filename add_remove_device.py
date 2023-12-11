@@ -74,10 +74,9 @@ class AddRemoveDevice:
 def main():
     # process remove list
     remove_list = AddRemoveDevice().process_csv('sample_remove_list.csv')
-    print(remove_list)
+
     # process add list
     add_list = AddRemoveDevice().process_csv('sample_add_list.csv')
-    print(add_list)
 
     # remove devices
     for remove in remove_list:
