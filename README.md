@@ -16,9 +16,7 @@ This Python script is designed to manage the addition and removal of devices usi
    ```
 s
 ## Set up the .env file with your HeadSpin API key:
-    ```makefile
     API_KEY=your_api_key_here
-    ```
 
 ## Usage
 Prepare your CSV files (sample_add_list.csv and sample_remove_list.csv) with device details.
