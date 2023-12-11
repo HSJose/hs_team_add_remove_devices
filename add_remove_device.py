@@ -1,7 +1,8 @@
-import requests
+import httpx
 import csv
 from rich import print
 from dotenv import load_dotenv
+import json
 import os
 
 # Load environment variables
@@ -11,7 +12,7 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 
 # Set the headers
-headers = {
+hs_headers = {
     "Authourization": f"Bearer {api_key}"
 }
 
@@ -19,41 +20,39 @@ headers = {
 class AddRemoveDevice:
 
     # method to call an api with a GET, POST, PATCH, or DELETE
-    def _call_api(self, method, url, headers, payload=None):
-        if method == "GET":
-            response = requests.get(url, headers=headers)
-        elif method == "POST":
-            response = requests.post(url, headers=headers, data=payload)
-        elif method == "PATCH":
-            response = requests.patch(url, headers=headers, data=payload)
-        elif method == "DELETE":
-            response = requests.delete(url, headers=headers, data=payload)
-        else:
+    def _call_api(self, method, url, header, payload=None):
+        allowed_methods = ["GET", "POST", "PATCH", "DELETE"]
+
+        if method not in allowed_methods:
             raise ValueError(f"Invalid method {method} passed to call_api")
-        return response
+        else:
+            response = httpx.request(method=method, url=url, data=payload)
+            return response
     
     # method to add a device
     def add_devices(self, team_id, payload):
         url = f'https://{api_key}@api-dev.headspin.io/v0/team/{team_id}/devices/add'
 
-        response = self._call_api("PATCH", url, headers, payload)
+        response = self._call_api("PATCH", url, hs_headers, payload)
         if response.status_code == 200:
             print("[green]Device added successfully[/green]")
             return response
         else:
             print("[red]Failed to add device[/red]")
+            print(response.url)
             print(response.text)
 
     # method to remove a device
     def remove_devices(self, team_id, payload):
         url = f'https://{api_key}@api-dev.headspin.io/v0/team/{team_id}/devices/remove'
 
-        response = self._call_api("DELETE", url, headers, payload)
+        response = self._call_api("DELETE", url, hs_headers, payload)
         if response.status_code == 200:
             print("[green]Device removed successfully[/green]")
             return response
         else:
             print("[red]Failed to remove device[/red]")
+            print(response.url)
             print(response.text)
 
     def process_csv(self, csv_file):
@@ -84,13 +83,17 @@ def main():
     for remove in remove_list:
         team_id = remove['UDID']
         device_addresses = remove['data']
-        AddRemoveDevice().remove_devices(team_id, device_addresses)
+        data = json.dumps(device_addresses)
+        removed = AddRemoveDevice().remove_devices(team_id, data)
+        print(removed.json())
 
     # add devices
     for add in add_list:
         team_id = add['UDID']
         device_addresses = add['data']
-        AddRemoveDevice().add_devices(team_id, device_addresses)
+        data = json.dumps(device_addresses)
+        added = AddRemoveDevice().add_devices(team_id, data)
+        print(added.json())
 
 
 if __name__ == "__main__":
