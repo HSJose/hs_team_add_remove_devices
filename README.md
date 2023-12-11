@@ -22,7 +22,9 @@ s
 Prepare your CSV files (sample_add_list.csv and sample_remove_list.csv) with device details.
 
 Run the script:
+    ```
     python add_remove_device.py
+    ```
 
 Follow the output on the terminal for the status of device addition or removal.
 
